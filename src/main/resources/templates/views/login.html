@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+
+    <!--
+    <link href="/vendor/jquery/jquery-3.3.1.min.js" rel="preload" as="script">
+    -->
+    <script type="text/javascript" src="/vendor/js/jquery/jquery-3.3.1.min.js"></script>
+    <!-- 순서주의 -->
+    <script type="text/javascript" src="/vendor/js/rsa/rsa.js"></script>
+    <script type="text/javascript" src="/vendor/js/rsa/jsbn.js"></script>
+    <script type="text/javascript" src="/vendor/js/rsa/prng4.js"></script>
+    <script type="text/javascript" src="/vendor/js/rsa/rng.js"></script>
+</head>
+<script type="text/javascript">
+    var loginObj = {
+        initParam: {}
+        , fn: {}
+        , param: {}
+    };
+
+    function loginsubmit() {
+        const username = $('#username').val();
+        const password = $('#password').val();
+        let userInfo = {};
+
+        //console.log("username:" + username);
+        //console.log("password:" + password);
+
+        // rsa 암호화
+        var rsa = new RSAKey(username);
+        var RSAModulus = $('#RSAModulus').val();
+        var RSAExponent = $('#RSAExponent').val();
+        rsa.setPublic(RSAModulus, RSAExponent);
+
+        userInfo.username = rsa.encrypt($('#username').val());
+        userInfo.password = rsa.encrypt($('#password').val());
+
+        //console.log( "userInfo.username:" + userInfo.username );
+        //console.log( "userInfo.password:" + userInfo.password );
+
+        var form = document.createElement('form');
+        form.setAttribute('method', 'GET');
+        form.setAttribute('action', '/loginAuth');
+        document.charset = "utf-8";
+
+        var hiddenField = document.createElement('input');
+        hiddenField.setAttribute('type', 'hidden');
+        hiddenField.setAttribute('name', 'username');
+        hiddenField.setAttribute('value', userInfo.username);
+        form.appendChild(hiddenField);
+
+        var hiddenField1 = document.createElement('input');
+        hiddenField1.setAttribute('type', 'hidden');
+        hiddenField1.setAttribute('name', 'password');
+        hiddenField1.setAttribute('value', userInfo.password);
+        form.appendChild(hiddenField1);
+        document.body.appendChild(form);
+        form.submit();
+
+        /*
+        $.ajax({
+            type: "GET",
+            url: "/loginAuth",
+            data: userInfo,
+            success: function(data) {
+                location.html = data;
+                console.log(data);
+                alert('성공');
+            },
+            error: function(e){
+                alert('error!!');
+                console.log(e);
+            }
+        });
+        */
+    }
+
+    function capslock(e) {
+        var keyCode = 0;
+        var shirftKey = false;
+        keyCode = e.keyCode;
+        shiftKey = e.shiftKey;
+
+        if (((keyCode >= 65 && keyCode <= 90) && !shiftKey) || ((keyCode >= 97 && keyCode <= 122) && shiftKey)) {
+            $("#capslockMsg").css("display", "block");
+        } else {
+            $("#capslockMsg").css("display", "none");
+        }
+    }
+
+    function encryptRSA(plain) {
+        // JS Library
+        var rsa = new RSAKey()
+            , rsaPublicKeyModulus = $("#RSAModulus").val()
+            , rsaPpublicKeyExponent = $("#RSAExponent").val();
+        rsa.setPublic(rsaPublicKeyModulus, rsaPpublicKeyExponent);
+
+        return rsa.encrypt(plain);
+    }
+</script>
+<body>
+    <!-- RSA 암호화 파라미터 -->
+    <form name="form_chk" id="form_chk" method="post">
+        <input type="hidden" id="RSAModulus" name="RSAModulus" th:value="${publicKeyModulus}"/>
+        <input type="hidden" id="RSAExponent" name="RSAExponent" th:value="${publicKeyExponent}"/>
+    </form>
+
+    <h1>Login</h1>
+    <hr>
+    <input type="hidden" name="${session._csrf.parameterName}" value="${session._csrf.token}" />
+    <p>ID :
+        <input type="text" id="username" name="username"  autocomplete="off">
+        <!--
+           onkeypress="javascript:capslock(event);"
+           onKeyup="if(event.keyCode == 20)capslock(event);">
+        -->
+    </p>
+    <p>PASSWORD :
+        <input type="password" id="password" name="password" autocomplete="off">
+        <!--
+           onkeypress="javascript:capslock(event);"
+           onKeyup="if(event.keyCode == 20)capslock(event); return false; if(event.keyCode == 13)loginsubmit(); return false;">
+        -->
+    </p>
+    <p class="msg" id="capslockMsg" style="display:none;">CapsLock이 켜져 있습니다.</p>
+    <button id="joinBtn" onclick="loginsubmit(); return false;">Login</button>
+    <br >
+    <a href="/signup">Go to join! →</a>
+    <br /><br /><br />
+    <p>publicKeyModulus: <span th:text="${publicKeyModulus}"></span></p>
+    <p>publicKeyExponent:<span th:text="${publicKeyExponent}"></span></p>
+</body>
+</html>

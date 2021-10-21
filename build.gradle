@@ -1,49 +1,58 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.11'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.5.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
-group = 'com.vportal'
+group = 'com.timegate.vportal'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
-//
-//node {
-//	version = '14.17.6'
-//	npmVersion = '6.14.15'
-//}
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
-bootJar {
-	archiveBaseName = '-'
-	archiveFileName = 'vue_springboot.jar'
-	archiveVersion = "0.0.0"
-}
+
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
+    // Spring boot web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.projectlombok:lombok:1.18.20'
+    runtimeOnly 'com.h2database:h2'
+    // SQL
+    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+    // Model Mapper
+    implementation 'org.modelmapper:modelmapper:2.3.8'
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // JASYPT(Java Simplified Encryption)
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
+    implementation 'org.apache.pulsar:pulsar-client:2.8.0'
+    // Querydsl-Config
+    implementation 'com.querydsl:querydsl-core:4.4.0'
+    implementation 'com.querydsl:querydsl-jpa:4.4.0'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test' //수정해야될수도 junit-vintage-engine으로 
+    annotationProcessor(
+            'jakarta.persistence:jakarta.persistence-api',
+            'jakarta.annotation:jakarta.annotation-api',
+            'com.querydsl:querydsl-apt:4.4.0:jpa')
 
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
-

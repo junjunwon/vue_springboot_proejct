@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+
+    <script>
+        function validate() {
+            if(document.getElementById('name').value==null || document.getElementById('name').value.length==0) {
+                alert("input name");
+                return true;
+            }
+
+             return false;
+        }
+
+        function save() {
+            if(validate()) {
+                return;
+            }
+
+			var sendParams={
+			    id:document.getElementById('id').value
+				,name:document.getElementById('name').value
+				,password:document.getElementById('password').value
+				,birth:document.getElementById('birth').value
+				,email:document.getElementById('email').value
+				,cellPhone:document.getElementById('cellPhone').value
+			};
+
+			// Ajax call
+			$.ajax({
+				url: "/tester/saveTester"
+				, type: 'POST'
+				, cache: false
+				, dataType: 'json'
+				, data: sendParams
+				, success: function(data){
+					$.each(data, function(key, value){
+					    console.log(key + ":" + value);
+					});
+				}
+				, error:function(e) {
+					console.log(e);
+					alert("Ajax call error!!" + e.statusText);
+				}
+			});
+		}
+
+        function remove() {
+			var sendParams={
+			    id:document.getElementById('id').value
+				,name:document.getElementById('name').value
+				,password:document.getElementById('password').value
+				,birth:document.getElementById('birth').value
+				,email:document.getElementById('email').value
+				,cellPhone:document.getElementById('cellPhone').value
+			};
+
+			// Ajax call
+			$.ajax({
+				url: "/tester/removeTester"
+				, type: 'POST'
+				, cache: false
+				, dataType: 'json'
+				, data: sendParams
+				, success: function(data){
+					$.each(data, function(key, value){
+					    console.log(key + ":" + value);
+					});
+				}
+				, error:function(e) {
+					console.log(e);
+					alert("Ajax call error!!" + e.statusText);
+				}
+			});
+		}
+
+		function search() {
+		    $('#table').empty();
+			var sendParams={
+			    id:document.getElementById('id').value
+				,name:document.getElementById('name').value
+				,password:document.getElementById('password').value
+				,birth:document.getElementById('birth').value
+				,email:document.getElementById('email').value
+				,cellPhone:document.getElementById('cellPhone').value
+			};
+
+			// Ajax call
+			$.ajax({
+				url: "/tester/getTester"
+				, type: 'POST'
+				, cache: false
+				, dataType: 'json'
+				, data: sendParams
+				, success: function(data){
+				    var ul = $('<ul />');
+					$.each(data, function(key, value){
+					    $.each(value, function(key, value){
+                            console.log(key + ":" + value);
+                            var val = key + ":" + value;
+                            ul.append( $('<li />' , {text : val}) );
+					     });
+					});
+					$('#table').append(ul);
+				}
+				, error:function(e) {
+					console.log(e);
+					alert("Ajax call error!!" + e.statusText);
+				}
+			});
+		}
+    </script>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <form name="testerForm">
+            id:<input type="text" id="id" name="id" value=""><br>
+            name:<input type="text" id="name" name="name" value=""><br>
+            password:<input type="text" id="password" name="password" value=""><br>
+            birth:<input type="text" id="birth" name="birth" value=""><br>
+            email:<input type="text" id="email" name="email" value=""><br>
+            cellPhone:<input type="text" id="cellPhone" name="cellPhone" value=""><br>
+        </form>
+    </div>
+    <br>
+    <div>
+        <input type="button" id="button1" onclick="save()" value="save">
+    </div>
+    <br>
+    <div>
+        <input type="button" id="button2" onclick="remove()" value="remove">
+    </div>
+    <br>
+    <div>
+        <input type="button" id="button4" onclick="search()" value="search">
+    </div>
+    <br>
+    <br>
+    <div id="table">
+    </div>
+</body>
+
+</html>
