@@ -3,6 +3,7 @@ package com.timegate.vportal;
 import com.timegate.vportal.common.utils.MessageLogger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 @SpringBootApplication
+@EnableJpaAuditing // Auditor.java 를 사용하기 위한 어노테이션.
 public class VportalApplication {
 
     private static MessageLogger logger = new MessageLogger();
