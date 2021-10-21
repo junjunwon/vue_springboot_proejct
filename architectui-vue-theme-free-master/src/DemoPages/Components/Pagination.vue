@@ -65,7 +65,6 @@
       heading: 'Pagination',
       subheading: 'Basic and dynamic pagination for use in your next awesome application.',
       icon: 'pe-7s-notebook icon-gradient bg-mixed-hopes',
-
       currentPage: 3
     }),
     methods: {

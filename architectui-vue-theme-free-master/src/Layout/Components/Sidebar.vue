@@ -35,6 +35,43 @@
 
                 menu: [
                     {
+                        header : true,
+                        title : 'vPortal'
+                    },
+                    {
+                        title : 'VWEB 관리',
+                        icon: 'pe-7s-rocket',
+                        child : [
+                            {
+                                href : '/board/vweb_board_mgmt',
+                                title : '게시판 관리'
+                            }
+                        ]
+
+                    },
+                    {
+                        title : '이력 관리',
+                        icon: 'pe-7s-rocket',
+                        child : [
+                            {
+                                href : '/hist_desktop_conn',
+                                title : '데스크탑 접속 이력'
+                            }
+                        ]
+
+                    },
+                    {
+                        title : '관리자 관리',
+                        icon: 'pe-7s-rocket',
+                        child : [
+                            {
+                                href : '/admin_mgmt',
+                                title : '관리자 계정 관리'
+                            }
+                        ]
+
+                    },
+                    {
                         header: true,
                         title: 'Main Navigation',
                     },

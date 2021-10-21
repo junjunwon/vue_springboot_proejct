@@ -10,6 +10,32 @@ export default new Router({
     },
     routes: [
 
+        //VWEB 관리
+        {
+            path : '/board/vweb_board_mgmt',
+            name : 'board_mgmt',
+            component : () => import('../vweb/board/Board.vue'),
+        },
+        {
+            path: '/board/boardnotice',
+            name: 'boardnotice',
+            component: () => import('../vweb/board/BoardNotice.vue'),
+        },
+
+        //이력
+        {
+            path : '/hist_desktop_conn',
+            name : 'hist_desktop_conn',
+            component : () => import('../vweb/DesktopHistory.vue'),
+        },
+
+        // 관리자 관리
+        {
+            path : '/admin_mgmt',
+            name : 'admin_mgmt',
+            component : () => import('../vweb/admin/AdminMgmt.vue')
+        },
+
         // Dashboards
 
         {
@@ -149,11 +175,7 @@ export default new Router({
             name: 'controls',
             component: () => import('../DemoPages/Forms/Elements/Controls.vue'),
         },
-        {
-            path: '/forms/boardnotice',
-            name: 'boardnotice',
-            component: () => import('../DemoPages/Forms/Elements/BoardNotice.vue'),
-        },
+
         {
             path: '/forms/layouts',
             name: 'layouts',
